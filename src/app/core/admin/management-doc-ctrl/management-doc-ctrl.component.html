@@ -1,0 +1,179 @@
+<div class="header pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-dark d-inline-block mb-0">Document Control Management</h6>
+
+                    <nav aria-label="breadcrumb" class=" d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class=" breadcrumb-item">
+                                <a href="javascript:void(0)"> <i class="far fa-file-alt text-dark"> </i> </a>
+                            </li>
+                            <li aria-current="page" class="breadcrumb-item active">
+                                Document Control Management
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-secondary">
+                    <h3 class="m-0">Input Groups</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-5">
+                            <div class="form-group">
+                                <label class="form-control-label">Keyword</label>
+                                <input class="form-control" formControlName="keyword" type="text" placeholder="Keyword">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-5">
+                            <div class="form-group">
+                                <label class="form-control-label">Department</label>
+                                <input class="form-control" formControlName="department" type="text" placeholder="Department">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-2 d-flex align-items-center">
+                            <button class="btn btn-default" type="button">Search</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-5">
+                            <div class="form-group">
+                                <label class="form-control-label">Type</label>
+                                <select class="form-control custom-select">
+                                    <option hidden selected>Please pick</option>
+                                    <option>Type 1</option>
+                                    <option>Type 2</option>
+                                    <option>Type 3</option>
+                                    <option>Type 4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-5">
+                            <div class="form-group">
+                                <label class="form-control-label">Date range</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                    </div>
+                                    <input 
+                                        type="date"
+                                        class="form-control"
+                                        required=""
+                                        placeholder="Date range"
+                                    >
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-2 d-flex align-items-center">
+                            <button class="btn btn-default" type="button">Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-secondary">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="m-0">Document</h3>
+                            <h6 class="mb-0">List of all document available</h6>
+                        </div>
+                        <label class="btn btn-default text-white ml-auto">Copy</label>
+                        <label class="btn btn-default text-white ml-1">Print</label>
+                    </div>
+                </div>
+                <div class="dataTables_wrapper py-4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8">
+                            <div class="dataTables_length" id="datatable_length">
+                                <label>
+                                    Show
+                                    <select 
+                                        name="datatable_length"
+                                        aria-controls="datatable"
+                                        class="form-control form-control-sm"
+                                        (change)="entriesChange($event)"
+                                    >
+                                        <option value="5" [selected]="tableEntries==5">5</option>
+                                        <option value="10" [selected]="tableEntries==10">10</option>
+                                        <option value="15" [selected]="tableEntries==15">15</option>
+                                        <option value="-1" [selected]="tableEntries==-1">All</option>
+                                    </select>
+                                    records
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 ml-auto">
+                            <div id="datatable_filter" class="dataTables_filter">
+                                <label>
+                                    <input 
+                                        type="search"
+                                        class="form-control form-control-sm"
+                                        placeholder="Search records"
+                                        aria-controls="datatable"
+                                        (keyup)="filterTable($event)" 
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><div class="col">
+                    <ngx-datatable 
+                        class="bootstrap selection-cell"
+                        [columnMode]="'force'"
+                        [headerHeight]="50"
+                        [footerHeight]="50" 
+                        [rowHeight]="'auto'"
+                        [selected]="tableSelected"
+                        [selectionType]="'multiClick'"
+                        [limit]="tableEntries != -1 ? tableEntries:undefined"
+                        [rows]="tableTemp" 
+                        (activate)="onActivate($event)"
+                    >
+
+                        <ngx-datatable-column name="docName">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Name</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="docType">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Type</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="department">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Department</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="views">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Views</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="lastModi">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Last Modified</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                    </div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

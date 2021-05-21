@@ -1,0 +1,393 @@
+<div class="header">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-dark d-inline-block mb-0">User Management</h6>
+
+					<nav aria-label="breadcrumb" class=" d-none d-md-inline-block ml-md-4">
+						<ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+							<li class=" breadcrumb-item">
+								<a href="javascript:void(0)"> <i class="fas fa-user text-dark"> </i> </a>
+							</li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)" class="text-dark"> Roles </a>
+                              </li>
+						</ol>
+					</nav>
+                </div>
+
+                <div class="col-lg-6 col-5 text-right text-white">
+					<a class="btn btn-sm btn-primary" (click)="openModal(regRoles)">
+						Add New Roles
+					</a>
+				</div>
+            </div>
+
+            <div class="row">
+				<div class="col-xl-4 col-sm-12">
+					<div class="card card-stats">
+						<div class="card-body">
+							<div class="row">
+								<div class="col">
+									<h5 class="card-title text-uppercase text-muted mb-0">
+										Total Roles
+									</h5>
+
+									<span class="h2 font-weight-bold mb-0"> 2 </span>
+								</div>
+
+								<div class="col-auto">
+									<div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+										<i class="fas fa-user-tag"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xl-4 col-sm-12">
+					<div class="card card-stats">
+						<div class="card-body">
+							<div class="row">
+								<div class="col">
+									<h5 class="card-title text-uppercase text-muted mb-0">
+										Performance
+									</h5>
+
+									<span class="h2 font-weight-bold mb-0"> 2,356 </span>
+								</div>
+
+								<div class="col-auto">
+									<div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+										<i class="fas fa-star-half-alt"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xl-4 col-sm-12">
+					<div class="card card-stats">
+						<div class="card-body">
+							<div class="row">
+								<div class="col">
+									<h5 class="card-title text-uppercase text-muted mb-0">
+										Total Traffic
+									</h5>
+
+									<span class="h2 font-weight-bold mb-0"> 924 </span>
+								</div>
+
+								<div class="col-auto">
+									<div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+										<i class="fas fa-traffic-light"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-secondary">
+                    <div class="row">
+                        <h3 class="m-0">List of Users</h3>
+                        <label class="btn btn-default text-white ml-auto">Copy</label>
+                        <label class="btn btn-default text-white ml-1">Print</label>
+                    </div>
+                </div>
+                <div class="dataTables_wrapper py-4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8">
+                            <div class="dataTables_length" id="datatable_length">
+                                <label>
+                                    Show
+                                    <select 
+                                        name="datatable_length"
+                                        aria-controls="datatable"
+                                        class="form-control form-control-sm"
+                                        (change)="entriesChange($event)"
+                                    >
+                                        <option value="5" [selected]="tableEntries==5">5</option>
+                                        <option value="10" [selected]="tableEntries==10">10</option>
+                                        <option value="15" [selected]="tableEntries==15">15</option>
+                                        <option value="-1" [selected]="tableEntries==-1">All</option>
+                                    </select>
+                                    records
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div id="datatable_filter" class="dataTables_filter">
+                                <label>
+                                    <input 
+                                        type="search"
+                                        class="form-control form-control-sm"
+                                        placeholder="Search records"
+                                        aria-controls="datatable"
+                                        (keyup)="filterTable($event)" 
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><div class="col">
+                    <ngx-datatable 
+                        class="bootstrap selection-cell"
+                        [columnMode]="'force'"
+                        [headerHeight]="50"
+                        [footerHeight]="50" 
+                        [rowHeight]="'auto'"
+                        [selected]="tableSelected"
+                        [selectionType]="'multiClick'"
+                        [limit]="tableEntries != -1 ? tableEntries:undefined"
+                        [rows]="tableTemp" 
+                        (activate)="onActivate($event)"
+                    >
+                        <ngx-datatable-column name="num">
+                            <ng-template ngx-datatable-header-template>
+                                <span>No.</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="userName">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Username</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="name">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Full Name</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="userType">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Role</span>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <span *ngIf="row.userType == 1" class="badge badge-pill badge-danger">admin</span>
+                                <span *ngIf="row.userType == 2" class="badge badge-pill badge-info">user</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="crud">
+                            <ng-template ngx-datatable-header-template>
+                                <span>Permission</span>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <span *ngIf="row.crud == '1111'">
+                                    Create <i class="far fa-check-circle text-success"></i><br>
+                                    Read <i class="far fa-check-circle text-success"></i><br>
+                                    Update <i class="far fa-check-circle text-success"></i><br>
+                                    Delete <i class="far fa-check-circle text-success"></i>
+                                </span>
+                                <span *ngIf="row.crud == '0110'">
+                                    Create <i class="far fa-times-circle text-warning"></i><br>
+                                    Read <i class="far fa-check-circle text-success"></i><br>
+                                    Update <i class="far fa-check-circle text-success"></i><br>
+                                    Delete <i class="far fa-times-circle text-warning"></i>
+                                </span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column>
+                            <ng-template ngx-datatable-header-template>
+                                <span>Edit</span>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <a class="btn btn-sm btn-success" (click)="openModal(editRoles)">
+                                    <i class="fas fa-edit text-white"></i>
+                                </a>
+                                <a class="btn btn-sm btn-warning">
+                                    <i class="fas fa-trash text-white"></i>
+                                </a>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                    </div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #regRoles>
+    <div class="modal-header bg-default">
+        <h6 class="modal-title text-white my-auto" id="compInfo">
+            Register New User Privelage
+        </h6>
+        <button
+            aria-label="Close"
+            class="close"
+            data-dismiss="modal"
+            type="button"
+            (click)="closeModal()"
+        >
+            <span aria-hidden="true" class="text-white my-auto">&times; </span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="form-control-label">Select Module</label>
+                    <select class="ml-4">
+                        <option>Module</option>
+                        <option>Module1</option>
+                        <option>Module2</option>
+                        <option>Module3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label class="form-control-label">User Type</label>
+                    <select class="ml-4">
+                        <option>Type</option>
+                        <option>Admin</option>
+                        <option>Staff</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label class="form-control-label">Select Status</label>
+                    <select class="ml-4">
+                        <option>Status</option>
+                        <option>Status1</option>
+                        <option>Status2</option>
+                        <option>Status3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button
+            class="btn btn-outline-danger ml-auto"
+            data-dismiss="modal"
+            type="button"
+            (click)="closeModal()"
+        >
+            Cancel
+        </button>
+
+        <button 
+            class="btn btn-success"
+            type="button"
+        >
+            Submit
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #editRoles>
+    <div class="modal-header bg-default">
+        <h6 class="modal-title text-white my-auto" id="compInfo">
+            Edit User
+        </h6>
+        <button
+            aria-label="Close"
+            class="close"
+            data-dismiss="modal"
+            type="button"
+            (click)="closeModal()"
+        >
+            <span aria-hidden="true" class="text-white my-auto">&times; </span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="form-control-label">Username</label>
+                    <input class="form-control" placeholder="admin" formControlName="username" type="text" disabled>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="form-control-label">Full Name</label>
+                    <input class="form-control" placeholder="Admin System" formControlName="fullname" type="text" disabled>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="form-control-label">Roles</label>
+                    <input class="form-control" placeholder="Staff" formControlName="roles" type="text">
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3">
+                            <label class="custom-toggle custom-toggle-default">
+                                <input type="checkbox" checked="">
+                                <span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
+                            </label>
+                        </div>
+                        <div class="ml-3">Create</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <label class="custom-toggle custom-toggle-default">
+                                <input type="checkbox" checked="">
+                                <span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
+                            </label>
+                        </div>
+                        <div class="ml-3">Update</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3">
+                            <label class="custom-toggle custom-toggle-default">
+                                <input type="checkbox" checked="">
+                                <span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
+                            </label>
+                        </div>
+                        <div class="ml-3">Read</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <label class="custom-toggle custom-toggle-default">
+                                <input type="checkbox" checked="">
+                                <span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
+                            </label>
+                        </div>
+                        <div class="ml-3">Delete</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button
+            class="btn btn-outline-danger ml-auto"
+            data-dismiss="modal"
+            type="button"
+            (click)="closeModal()"
+        >
+            Cancel
+        </button>
+
+        <button 
+            class="btn btn-success"
+            type="button"
+        >
+            Submit
+        </button>
+    </div>
+</ng-template>
